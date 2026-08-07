@@ -23,13 +23,38 @@
         android:layout_marginTop="16dp"
         android:gravity="center" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="28dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="悬浮窗"
+            android:textColor="#a0a0a0"
+            android:textSize="16sp"
+            android:layout_marginEnd="14dp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/overlay_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:thumbTint="#DE886D"
+            android:trackTint="#444" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/action_button"
         android:layout_width="200dp"
         android:layout_height="48dp"
         android:text="去授权"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#DE886D"
-        android:textColor="#fff" />
+        android:textColor="#fff"
+        android:visibility="gone" />
 
 </LinearLayout>
