@@ -10,7 +10,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
-import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.webkit.WebSettings
@@ -33,6 +32,9 @@ class OverlayService : Service() {
         private const val PET_SIZE_DP = 120
         private const val PET_HEIGHT_DP = 155
         @Volatile var instance: OverlayService? = null
+        @Volatile var currentAction: String = "idle"
+        @Volatile var lastJsResult: String = "\u2014"
+        @Volatile var isPetEngineReady: Boolean = false
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -41,7 +43,7 @@ class OverlayService : Service() {
         super.onCreate()
         instance = this
         createNotificationChannel()
-        startForeground(NOTIFICATION_ID, buildNotification("在你身边 🦀"))
+        startForeground(NOTIFICATION_ID, buildNotification("\u5728\u4f60\u8eab\u8fb9 \uD83E\uDD80"))
         setupOverlay()
     }
 
@@ -78,28 +80,7 @@ class OverlayService : Service() {
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
-                    view?.evaluateJavascript(
-                        "(function(){return typeof window.petEngine !== 'undefined' && typeof window.petEngine.onTap === 'function'})()"
-                    ) { result ->
-                        if (result == "true") {
-                            petEngineInitialized = true
-                            Log.d(TAG, "petEngine 就绪")
-                        } else {
-                            Log.w(TAG, "petEngine 未就绪，800ms后重试")
-                            handler.postDelayed({
-                                view?.evaluateJavascript(
-                                    "(function(){return typeof window.petEngine !== 'undefined' && typeof window.petEngine.onTap === 'function'})()"
-                                ) { retry ->
-                                    if (retry == "true") {
-                                        petEngineInitialized = true
-                                        Log.d(TAG, "petEngine 重试就绪")
-                                    } else {
-                                        Log.e(TAG, "petEngine 仍未就绪")
-                                    }
-                                }
-                            }, 800)
-                        }
-                    }
+                    checkPetEngine(view, 0)
                 }
             }
             loadUrl("file:///android_asset/pet.html")
@@ -107,6 +88,23 @@ class OverlayService : Service() {
         }
 
         windowManager?.addView(overlayView, params)
+    }
+
+    private fun checkPetEngine(view: WebView?, attempt: Int) {
+        view?.evaluateJavascript(
+            "(function(){return typeof window.petEngine !== 'undefined' && typeof window.petEngine.onTap === 'function'})()"
+        ) { result ->
+            if (result == "true") {
+                petEngineInitialized = true
+                isPetEngineReady = true
+                Log.d(TAG, "petEngine ready (attempt=$attempt)")
+            } else if (attempt < 3) {
+                Log.w(TAG, "petEngine not ready, retry ${attempt + 1}")
+                handler.postDelayed({ checkPetEngine(view, attempt + 1) }, 800)
+            } else {
+                Log.e(TAG, "petEngine failed after $attempt retries")
+            }
+        }
     }
 
     private var initialX = 0
@@ -166,99 +164,87 @@ class OverlayService : Service() {
     }
 
     private fun onTap() {
-        if (petEngineInitialized) {
-            overlayView?.evaluateJavascript("petEngine.onTap()", null)
-        } else {
-            Log.w(TAG, "petEngine 未就绪，跳过 onTap")
-        }
+        if (petEngineInitialized) overlayView?.evaluateJavascript("petEngine.onTap()", null)
+        else Log.w(TAG, "petEngine not ready, skip onTap")
     }
 
     private fun onDoubleTap() {
-        if (petEngineInitialized) {
-            overlayView?.evaluateJavascript("petEngine.onDoubleTap()", null)
-        } else {
-            Log.w(TAG, "petEngine 未就绪，跳过 onDoubleTap")
-        }
+        if (petEngineInitialized) overlayView?.evaluateJavascript("petEngine.onDoubleTap()", null)
+        else Log.w(TAG, "petEngine not ready, skip onDoubleTap")
     }
 
     private fun onLongPress() {
-        if (petEngineInitialized) {
-            overlayView?.evaluateJavascript("petEngine.onLongPress()", null)
-        } else {
-            Log.w(TAG, "petEngine 未就绪，跳过 onLongPress")
-        }
+        if (petEngineInitialized) overlayView?.evaluateJavascript("petEngine.onLongPress()", null)
+        else Log.w(TAG, "petEngine not ready, skip onLongPress")
     }
 
-    // === JS BRIDGE (MainActivity远程调用) ===
-
     fun callPetEngine(method: String): String {
-        if (!petEngineInitialized) {
-            Log.w(TAG, "petEngine未就绪，跳过 $method")
-            return "not_ready"
-        }
-        overlayView?.evaluateJavascript("petEngine.${method}()") { result ->
-            Log.i(TAG, "callPetEngine($method) => $result")
+        if (!petEngineInitialized) return "not_ready"
+        overlayView?.evaluateJavascript("petEngine.${method}()") { r ->
+            lastJsResult = "$method => $r"
+            Log.i(TAG, "callPetEngine($method) => $r")
         }
         return "ok"
     }
 
     fun playPetAction(action: String): String {
-        if (!petEngineInitialized) {
-            Log.w(TAG, "petEngine未就绪，跳过 playPetAction($action)")
-            return "not_ready"
-        }
-        val safeAction = JSONObject.quote(action)
-        overlayView?.evaluateJavascript("petEngine.playAction($safeAction)") { result ->
-            Log.i(TAG, "playPetAction($action) => $result")
+        if (!petEngineInitialized) return "not_ready"
+        currentAction = action
+        val safe = JSONObject.quote(action)
+        overlayView?.evaluateJavascript("petEngine.playAction($safe)") { r ->
+            lastJsResult = "playAction($action) => $r"
+            Log.i(TAG, "playPetAction($action) => $r")
         }
         return "ok"
     }
 
-    // === NOTIFICATION ===
+    fun updateSize(sizeDp: Int) {
+        params?.let { p ->
+            p.width = dpToPx(sizeDp)
+            p.height = dpToPx((sizeDp * PET_HEIGHT_DP.toFloat() / PET_SIZE_DP.toFloat()).toInt())
+            try { windowManager?.updateViewLayout(overlayView, p) }
+            catch (e: Exception) { Log.e(TAG, "updateSize err", e) }
+        }
+    }
+
+    fun updateAlpha(alpha: Float) {
+        params?.let { p ->
+            p.alpha = alpha.coerceIn(0.3f, 1.0f)
+            try { windowManager?.updateViewLayout(overlayView, p) }
+            catch (e: Exception) { Log.e(TAG, "updateAlpha err", e) }
+        }
+    }
 
     private fun buildNotification(text: String): Notification {
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0,
+        val pi = PendingIntent.getActivity(this, 0,
             packageManager.getLaunchIntentForPackage(packageName),
-            PendingIntent.FLAG_IMMUTABLE
-        )
+            PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("秦妄")
+            .setContentTitle("\u79E6\u5984")
             .setContentText(text)
             .setSmallIcon(android.R.drawable.ic_menu_compass)
-            .setContentIntent(pendingIntent)
-            .setOngoing(true)
-            .setSilent(true)
+            .setContentIntent(pi)
+            .setOngoing(true).setSilent(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()
     }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "秦妄桌宠",
-                NotificationManager.IMPORTANCE_LOW
-            ).apply {
-                setShowBadge(false)
-                description = "秦妄悬浮窗运行中"
-            }
             getSystemService(NotificationManager::class.java)
-                .createNotificationChannel(channel)
+                .createNotificationChannel(NotificationChannel(
+                    CHANNEL_ID, "\u79E6\u5984\u684C\u5BA0", NotificationManager.IMPORTANCE_LOW
+                ).apply { setShowBadge(false); description = "\u79E6\u5984\u60AC\u6D6E\u7A97\u8FD0\u884C\u4E2D" })
         }
     }
 
-    private fun dpToPx(dp: Int): Int {
-        return (dp * resources.displayMetrics.density).toInt()
-    }
+    private fun dpToPx(dp: Int): Int = (dp * resources.displayMetrics.density).toInt()
 
     override fun onDestroy() {
         instance = null
+        isPetEngineReady = false
         handler.removeCallbacksAndMessages(null)
-        overlayView?.let {
-            windowManager?.removeView(it)
-            it.destroy()
-        }
+        overlayView?.let { windowManager?.removeView(it); it.destroy() }
         overlayView = null
         super.onDestroy()
     }
