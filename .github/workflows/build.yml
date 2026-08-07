@@ -41,11 +41,29 @@ jobs:
         run: ls -la ${ANDROID_HOME}/platforms/ || echo "no platforms dir"
 
       - name: Build debug APK
+        id: build
         run: |
-          set -o pipefail
-          ./gradlew assembleDebug --stacktrace --warning-mode all 2>&1 | tail -500
+          ./gradlew assembleDebug --stacktrace --warning-mode all 2>&1 | tee build-log.txt
+          echo "BUILD_EXIT=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build-log.txt
+
+      - name: Check build result
+        if: always()
+        run: |
+          if [ "${{ steps.build.outputs.BUILD_EXIT }}" != "0" ]; then
+            echo "Build failed with exit code ${{ steps.build.outputs.BUILD_EXIT }}"
+            exit 1
+          fi
 
       - name: Upload APK
+        if: steps.build.outputs.BUILD_EXIT == '0'
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
