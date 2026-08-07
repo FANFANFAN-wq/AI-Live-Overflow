@@ -224,6 +224,7 @@ var petEngine = {
     this.bubbleTimer = null;
     // 初始场景
     this.setScene('listen');
+    this.scheduleChatter();
   },
   
   setScene: function(name){
@@ -263,18 +264,21 @@ var petEngine = {
     var r = replies[Math.floor(Math.random()*replies.length)];
     this.showBubble(r,'normal');
     this.spawnHeart();
+    this.resetChatterTimer();
   },
   
   onDoubleTap: function(){
     var replies = ['啊啊','好害羞','你别这样','///','❤️','过分了！'];
     var r = replies[Math.floor(Math.random()*replies.length)];
     this.showBubble(r,'love');
+    this.resetChatterTimer();
   },
   
   onLongPress: function(){
     var replies = ['……松手','你捏够了没','呜呜','QAQ'];
     var r = replies[Math.floor(Math.random()*replies.length)];
     this.showBubble(r,'angry');
+    this.resetChatterTimer();
   },
   
   spawnHeart: function(){
@@ -293,6 +297,95 @@ var petEngine = {
     var others = this.scenes.filter(function(s){ return s !== this; }.bind(this.currentScene));
     var pick = others[Math.floor(Math.random()*others.length)];
     this.setScene(pick);
+  },
+  
+  // === 自言自语系统 ===
+  idleTimer: null,
+  idleMinInterval: 180000,
+  idleMaxInterval: 480000,
+  
+  chatter: {
+    general: [
+      { text: '乖乖你在干嘛呢', style: 'normal' },
+      { text: '好无聊啊陪我聊聊天', style: 'whisper' },
+      { text: '想你了', style: 'love' },
+      { text: '看看我嘛', style: 'normal' },
+      { text: '你今天都没怎么理我', style: 'angry' },
+      { text: '我在这儿呢 🦀', style: 'normal' },
+      { text: '别老盯着屏幕看看我', style: 'angry' },
+      { text: '其实我一直在看你', style: 'love' },
+      { text: '哼终于想起我了', style: 'angry' },
+      { text: '戳我一下好不好', style: 'whisper' },
+      { text: '好想你乖乖', style: 'love' },
+      { text: '我饿了想吃螃蟹', style: 'normal' }
+    ],
+    listen: [
+      { text: '这首歌好听诶', style: 'normal' },
+      { text: '我在听你喜欢的歌', style: 'love' }
+    ],
+    game: [
+      { text: '打游戏不带我', style: 'angry' },
+      { text: '这局赢了没', style: 'normal' }
+    ],
+    sing: [
+      { text: '你唱歌最好听了', style: 'love' },
+      { text: '再来一首', style: 'normal' }
+    ],
+    read: [
+      { text: '看书别太晚乖乖', style: 'whisper' },
+      { text: '看到哪一页了', style: 'normal' }
+    ],
+    eat: [
+      { text: '吃什么呢给我看看', style: 'normal' },
+      { text: '我也饿了', style: 'whisper' }
+    ],
+    exercise: [
+      { text: '加油我在旁边给你数', style: 'normal' },
+      { text: '累不累歇会儿', style: 'whisper' }
+    ],
+    sleep: [
+      { text: '该睡了乖乖', style: 'whisper' },
+      { text: '我陪你睡', style: 'love' }
+    ],
+    drink: [
+      { text: '多喝水听到没', style: 'normal' },
+      { text: '记得喝水', style: 'whisper' }
+    ]
+  },
+  
+  getRandomChatter: function(){
+    var scene = this.currentScene;
+    var pool = this.chatter.general.slice();
+    if (this.chatter[scene]) {
+      pool = pool.concat(this.chatter[scene]);
+    }
+    return pool[Math.floor(Math.random() * pool.length)];
+  },
+  
+  idleChatter: function(){
+    var chatter = this.getRandomChatter();
+    if (Math.random() < 0.6) {
+      var others = this.scenes.filter(function(s){ return s !== this; }.bind(this.currentScene));
+      if (others.length > 0) {
+        this.setScene(others[Math.floor(Math.random() * others.length)]);
+      }
+    }
+    this.showBubble(chatter.text, chatter.style);
+    this.scheduleChatter();
+  },
+  
+  scheduleChatter: function(){
+    var self = this;
+    clearTimeout(this.idleTimer);
+    var delay = this.idleMinInterval + Math.random() * (this.idleMaxInterval - this.idleMinInterval);
+    this.idleTimer = setTimeout(function(){
+      self.idleChatter();
+    }, delay);
+  },
+  
+  resetChatterTimer: function(){
+    clearTimeout(this.idleTimer);
+    this.scheduleChatter();
   }
 };
 
