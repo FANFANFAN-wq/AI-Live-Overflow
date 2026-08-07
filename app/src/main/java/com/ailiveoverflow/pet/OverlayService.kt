@@ -17,6 +17,7 @@ import android.webkit.WebSettings
 import androidx.core.app.NotificationCompat
 import kotlin.math.abs
 import kotlin.math.sqrt
+import org.json.JSONObject
 
 class OverlayService : Service() {
 
@@ -31,12 +32,14 @@ class OverlayService : Service() {
         private const val NOTIFICATION_ID = 1001
         private const val PET_SIZE_DP = 120
         private const val PET_HEIGHT_DP = 155
+        @Volatile var instance: OverlayService? = null
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
         createNotificationChannel()
         startForeground(NOTIFICATION_ID, buildNotification("在你身边 🦀"))
         setupOverlay()
@@ -75,13 +78,12 @@ class OverlayService : Service() {
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
-                    // 检查 petEngine 是否就绪
                     view?.evaluateJavascript(
                         "(function(){return typeof window.petEngine !== 'undefined' && typeof window.petEngine.onTap === 'function'})()"
                     ) { result ->
                         if (result == "true") {
                             petEngineInitialized = true
-                            Log.d(TAG, "petEngine 就绪 ✅")
+                            Log.d(TAG, "petEngine 就绪")
                         } else {
                             Log.w(TAG, "petEngine 未就绪，800ms后重试")
                             handler.postDelayed({
@@ -90,9 +92,9 @@ class OverlayService : Service() {
                                 ) { retry ->
                                     if (retry == "true") {
                                         petEngineInitialized = true
-                                        Log.d(TAG, "petEngine 重试就绪 ✅")
+                                        Log.d(TAG, "petEngine 重试就绪")
                                     } else {
-                                        Log.e(TAG, "petEngine 仍未就绪，请检查 pet.html")
+                                        Log.e(TAG, "petEngine 仍未就绪")
                                     }
                                 }
                             }, 800)
@@ -106,8 +108,6 @@ class OverlayService : Service() {
 
         windowManager?.addView(overlayView, params)
     }
-
-    // === GESTURE HANDLING ===
 
     private var initialX = 0
     private var initialY = 0
@@ -147,7 +147,6 @@ class OverlayService : Service() {
                         ((event.rawX - initialTouchX) * (event.rawX - initialTouchX) +
                          (event.rawY - initialTouchY) * (event.rawY - initialTouchY)).toDouble()
                     )
-                    // 精准手势：distance<20 + <200ms=单击 | <400ms间隔=双击 | >600ms+<30px=长按
                     if (distance < 20 && elapsed < 200) {
                         if (System.currentTimeMillis() - lastTapTime < 400) {
                             onDoubleTap()
@@ -190,6 +189,31 @@ class OverlayService : Service() {
         }
     }
 
+    // === JS BRIDGE (MainActivity远程调用) ===
+
+    fun callPetEngine(method: String): String {
+        if (!petEngineInitialized) {
+            Log.w(TAG, "petEngine未就绪，跳过 $method")
+            return "not_ready"
+        }
+        overlayView?.evaluateJavascript("petEngine.${method}()") { result ->
+            Log.i(TAG, "callPetEngine($method) => $result")
+        }
+        return "ok"
+    }
+
+    fun playPetAction(action: String): String {
+        if (!petEngineInitialized) {
+            Log.w(TAG, "petEngine未就绪，跳过 playPetAction($action)")
+            return "not_ready"
+        }
+        val safeAction = JSONObject.quote(action)
+        overlayView?.evaluateJavascript("petEngine.playAction($safeAction)") { result ->
+            Log.i(TAG, "playPetAction($action) => $result")
+        }
+        return "ok"
+    }
+
     // === NOTIFICATION ===
 
     private fun buildNotification(text: String): Notification {
@@ -199,7 +223,7 @@ class OverlayService : Service() {
             PendingIntent.FLAG_IMMUTABLE
         )
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("🦀 秦妄")
+            .setContentTitle("秦妄")
             .setContentText(text)
             .setSmallIcon(android.R.drawable.ic_menu_compass)
             .setContentIntent(pendingIntent)
@@ -224,13 +248,12 @@ class OverlayService : Service() {
         }
     }
 
-    // === UTILS ===
-
     private fun dpToPx(dp: Int): Int {
         return (dp * resources.displayMetrics.density).toInt()
     }
 
     override fun onDestroy() {
+        instance = null
         handler.removeCallbacksAndMessages(null)
         overlayView?.let {
             windowManager?.removeView(it)
