@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.IBinder
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.*
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
@@ -15,6 +16,7 @@ import android.webkit.WebViewClient
 import android.webkit.WebSettings
 import androidx.core.app.NotificationCompat
 import kotlin.math.abs
+import kotlin.math.sqrt
 
 class OverlayService : Service() {
 
@@ -24,6 +26,7 @@ class OverlayService : Service() {
     private val handler = Handler(Looper.getMainLooper())
 
     companion object {
+        private const val TAG = "OverlayService"
         private const val CHANNEL_ID = "pet_overlay_channel"
         private const val NOTIFICATION_ID = 1001
         private const val PET_SIZE_DP = 120
@@ -69,7 +72,34 @@ class OverlayService : Service() {
                 setSupportZoom(false)
                 builtInZoomControls = false
             }
-            webViewClient = WebViewClient()
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    // 检查 petEngine 是否就绪
+                    view?.evaluateJavascript(
+                        "(function(){return typeof window.petEngine !== 'undefined' && typeof window.petEngine.onTap === 'function'})()"
+                    ) { result ->
+                        if (result == "true") {
+                            petEngineInitialized = true
+                            Log.d(TAG, "petEngine 就绪 ✅")
+                        } else {
+                            Log.w(TAG, "petEngine 未就绪，800ms后重试")
+                            handler.postDelayed({
+                                view?.evaluateJavascript(
+                                    "(function(){return typeof window.petEngine !== 'undefined' && typeof window.petEngine.onTap === 'function'})()"
+                                ) { retry ->
+                                    if (retry == "true") {
+                                        petEngineInitialized = true
+                                        Log.d(TAG, "petEngine 重试就绪 ✅")
+                                    } else {
+                                        Log.e(TAG, "petEngine 仍未就绪，请检查 pet.html")
+                                    }
+                                }
+                            }, 800)
+                        }
+                    }
+                }
+            }
             loadUrl("file:///android_asset/pet.html")
             setOnTouchListener(createTouchListener())
         }
@@ -86,6 +116,7 @@ class OverlayService : Service() {
     private var lastTapTime = 0L
     private var touchStartTime = 0L
     private var hasMoved = false
+    private var petEngineInitialized = false
 
     private fun createTouchListener(): View.OnTouchListener {
         return View.OnTouchListener { _, event ->
@@ -112,15 +143,21 @@ class OverlayService : Service() {
                 }
                 MotionEvent.ACTION_UP -> {
                     val elapsed = System.currentTimeMillis() - touchStartTime
-                    if (!hasMoved) {
-                        when {
-                            elapsed > 600 -> onLongPress()
-                            System.currentTimeMillis() - lastTapTime < 300 -> onDoubleTap()
-                            else -> {
-                                lastTapTime = System.currentTimeMillis()
-                                onTap()
-                            }
+                    val distance = sqrt(
+                        ((event.rawX - initialTouchX) * (event.rawX - initialTouchX) +
+                         (event.rawY - initialTouchY) * (event.rawY - initialTouchY)).toDouble()
+                    )
+                    // 精准手势：distance<20 + <200ms=单击 | <400ms间隔=双击 | >600ms+<30px=长按
+                    if (distance < 20 && elapsed < 200) {
+                        if (System.currentTimeMillis() - lastTapTime < 400) {
+                            onDoubleTap()
+                            lastTapTime = 0L
+                        } else {
+                            lastTapTime = System.currentTimeMillis()
+                            onTap()
                         }
+                    } else if (elapsed > 600 && distance < 30) {
+                        onLongPress()
                     }
                     true
                 }
@@ -130,15 +167,27 @@ class OverlayService : Service() {
     }
 
     private fun onTap() {
-        overlayView?.evaluateJavascript("petEngine.onTap()", null)
+        if (petEngineInitialized) {
+            overlayView?.evaluateJavascript("petEngine.onTap()", null)
+        } else {
+            Log.w(TAG, "petEngine 未就绪，跳过 onTap")
+        }
     }
 
     private fun onDoubleTap() {
-        overlayView?.evaluateJavascript("petEngine.onDoubleTap()", null)
+        if (petEngineInitialized) {
+            overlayView?.evaluateJavascript("petEngine.onDoubleTap()", null)
+        } else {
+            Log.w(TAG, "petEngine 未就绪，跳过 onDoubleTap")
+        }
     }
 
     private fun onLongPress() {
-        overlayView?.evaluateJavascript("petEngine.onLongPress()", null)
+        if (petEngineInitialized) {
+            overlayView?.evaluateJavascript("petEngine.onLongPress()", null)
+        } else {
+            Log.w(TAG, "petEngine 未就绪，跳过 onLongPress")
+        }
     }
 
     // === NOTIFICATION ===
