@@ -14,6 +14,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.webkit.WebSettings
 import androidx.core.app.NotificationCompat
+import kotlin.math.abs
 
 class OverlayService : Service() {
 
@@ -102,7 +103,7 @@ class OverlayService : Service() {
                 MotionEvent.ACTION_MOVE -> {
                     val dx = (event.rawX - initialTouchX).toInt()
                     val dy = (event.rawY - initialTouchY).toInt()
-                    if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+                    if (abs(dx) > 10 || abs(dy) > 10) {
                         hasMoved = true
                         params?.x = initialX + dx
                         params?.y = initialY + dy
