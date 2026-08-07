@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,12 +54,12 @@ jobs:
         if: always()
         run: |
           mkdir -p build-logs
-          cp build-log.txt build-logs/build-log-"$(date +%Y%m%d-%H%M%S)".txt
+          cp build-log.txt build-logs/build-log.txt
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add build-logs/
-          git commit -m "ci: upload build log [skip ci]" || echo "no changes"
-          git push || echo "push failed (non-fatal)"
+          git diff --cached --quiet || git commit -m "ci: upload build log [skip ci]"
+          git push
 
       - name: Check build result
         if: always()
