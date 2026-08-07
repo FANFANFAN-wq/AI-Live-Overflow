@@ -6,11 +6,9 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:transparent}
-
 .scene{position:absolute;top:0;left:0;width:100%;height:100%;display:none;align-items:center;justify-content:center}
 .scene.active{display:flex}
 .scene svg{width:100px;height:100px}
-
 #bubble{position:absolute;top:-32px;left:50%;transform:translateX(-50%);padding:4px 10px;border-radius:10px;font-size:10px;font-family:'Segoe UI',system-ui,sans-serif;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .25s;z-index:10;max-width:130px;text-align:center;line-height:1.3}
 #bubble.show{opacity:1}
 #bubble.normal{background:rgba(40,40,50,.92);color:#e8e8e8;border:1px solid rgba(255,255,255,.1)}
@@ -58,340 +56,253 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 @keyframes sg-sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
 @keyframes sg-shadow{0%,100%{transform:scaleX(1);opacity:.5}50%{transform:scaleX(.92);opacity:.42}}
 @keyframes sg-blink{0%,44%,56%,100%{transform:scaleY(1)}50%{transform:scaleY(.1)}}
-@keyframes sg-sing{0%{transform:scaleY(.45) scaleX(.9)}100%{transform:scaleY(1.15) scaleX(1.05)}}
-@keyframes sg-wave{0%,100%{transform:rotate(42deg)}50%{transform:rotate(78deg) translateY(-1px)}}
-@keyframes sg-note{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:1}80%{opacity:.85}100%{opacity:0;transform:translate(var(--tx,-5px),-18px) rotate(var(--r,-18deg))}}
+@keyframes sg-sing{0%{transform:scaleY(1)}100%{transform:scaleY(1.5)}}
+@keyframes sg-wave{0%,100%{transform:rotate(0)}50%{transform:rotate(28deg)}}
+@keyframes sg-note{0%{opacity:0;transform:translate(0,0)}15%{opacity:1}80%{opacity:.8}100%{opacity:0;transform:translate(var(--tx,3px),-17px)}}
 
-.rd-body{transform-origin:7.5px 13px;animation:rd-bob 4.2s infinite ease-in-out}
-.rd-shad{transform-origin:7.5px 15.5px;animation:rd-shadow 4.2s infinite ease-in-out}
-.rd-eye{transform-origin:7.5px 9px;animation:rd-scan 4.2s infinite ease-in-out}
-.rd-page{transform-origin:7.5px 11px;animation:rd-flip 4.2s infinite ease-in-out}
-@keyframes rd-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-.5px)}}
-@keyframes rd-shadow{0%,100%{transform:scaleX(1);opacity:.5}50%{transform:scaleX(.97);opacity:.46}}
-@keyframes rd-scan{0%,8%{transform:translateX(-.9px) scaleY(1)}12%{transform:translateX(-.9px) scaleY(.15)}16%,42%{transform:translateX(-.9px) scaleY(1)}50%,90%{transform:translateX(.9px) scaleY(1)}100%{transform:translateX(-.9px) scaleY(1)}}
-@keyframes rd-flip{0%,72%,100%{transform:scaleX(1)}80%{transform:scaleX(.08)}88%{transform:scaleX(1)}}
+.rd-body{transform-origin:7.5px 13px;animation:rd-breathe 3s infinite ease-in-out}
+.rd-eye{transform-origin:7.5px 9px;animation:rd-blink 3.5s infinite}
+.rd-page{transform-origin:0 50%;animation:rd-flip 4s infinite ease-in-out}
+@keyframes rd-breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.03)}}
+@keyframes rd-blink{0%,44%,56%,100%{transform:scaleY(1)}50%{transform:scaleY(.1)}}
+@keyframes rd-flip{0%,40%{transform:rotateY(0)}50%,90%{transform:rotateY(-25deg)}100%{transform:rotateY(0)}}
 
-.et-body{transform-origin:7.5px 13px;animation:et-bob 1.8s infinite ease-in-out}
-.et-shad{transform-origin:7.5px 15.5px;animation:et-shadow 1.8s infinite ease-in-out}
-.et-eye{transform-origin:7.5px 9px;animation:et-blink 3.4s infinite}
-.et-mouth{transform-origin:7.5px 11.3px;animation:et-chew .45s infinite alternate ease-in-out}
-.et-arm{transform-origin:13px 10px;animation:et-feed 1.8s infinite ease-in-out}
-.et-steam{opacity:0;animation:et-steam 2s var(--sd,0s) infinite ease-in}
-@keyframes et-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-.4px)}}
-@keyframes et-shadow{0%,100%{transform:scaleX(1);opacity:.5}50%{transform:scaleX(.97);opacity:.46}}
-@keyframes et-blink{0%,46%,54%,100%{transform:scaleY(1)}50%{transform:scaleY(.1)}}
-@keyframes et-chew{0%{transform:scaleY(.5)}100%{transform:scaleY(1)}}
-@keyframes et-feed{0%,12%{transform:rotate(-13deg)}48%{transform:rotate(3deg)}82%,100%{transform:rotate(-13deg)}}
-@keyframes et-steam{0%{opacity:0;transform:translate(0,0) scaleX(1)}25%{opacity:.7}100%{opacity:0;transform:translate(var(--tx,1px),-7px) scaleX(.4)}}
+.et-body{transform-origin:7.5px 13px;animation:et-nod .8s infinite ease-in-out}
+.et-al{transform-origin:2px 10px;animation:et-scoop .8s infinite ease-in-out}
+.et-ar{transform-origin:13px 10px;animation:et-scoop .8s -.4s infinite ease-in-out}
+.et-steam{opacity:0;animation:et-steam 1.8s infinite ease-out}
+@keyframes et-nod{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes et-scoop{0%,100%{transform:rotate(0)}50%{transform:rotate(18deg)}}
+@keyframes et-steam{0%{opacity:0;transform:translateY(0)}20%{opacity:.6}80%{opacity:.3}100%{opacity:0;transform:translateY(-10px)}}
 
-.ex-body{transform-origin:7.5px 13px;animation:ex-squat 1s infinite ease-in-out}
-.ex-shad{transform-origin:7.5px 15.5px;animation:ex-shadow 1s infinite ease-in-out}
-.ex-eye{transform-origin:7.5px 9px;animation:ex-eye 1s infinite ease-in-out}
-.ex-al{transform-origin:2px 10px;animation:ex-curl-l 1s infinite ease-in-out}
-.ex-ar{transform-origin:13px 10px;animation:ex-curl-r 1s infinite ease-in-out}
-.ex-sweat{opacity:0;animation:ex-sweat 1s var(--sd,0s) infinite ease-out}
-@keyframes ex-squat{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(1px) scaleY(.93)}}
-@keyframes ex-shadow{0%,100%{transform:scaleX(1);opacity:.5}50%{transform:scaleX(1.06);opacity:.55}}
-@keyframes ex-eye{0%,100%{transform:scaleY(.7)}50%{transform:scaleY(.5)}}
-@keyframes ex-curl-l{0%,100%{transform:rotate(12deg)}50%{transform:rotate(74deg)}}
-@keyframes ex-curl-r{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(-74deg)}}
-@keyframes ex-sweat{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}100%{opacity:0;transform:translate(var(--tx,3px),6px)}}
+.ex-body{transform-origin:7.5px 13px;animation:ex-jump .7s infinite ease-in-out}
+.ex-al{transform-origin:2px 10px;animation:ex-lift .7s infinite ease-in-out}
+.ex-ar{transform-origin:13px 10px;animation:ex-lift .7s -.35s infinite ease-in-out}
+@keyframes ex-jump{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes ex-lift{0%,100%{transform:rotate(0)}50%{transform:rotate(40deg)}}
 
-.sp-body{transform-origin:7.5px 13px;animation:sp-breathe 3.4s infinite ease-in-out}
-.sp-shad{transform-origin:7.5px 15.5px;animation:sp-shadow 3.4s infinite ease-in-out}
-.sp-eye{transform-origin:7.5px 9px;animation:sp-sleep 3.4s infinite}
-.sp-z{opacity:0;animation:sp-z var(--d,2.4s) var(--delay,0s) infinite ease-out}
-@keyframes sp-breathe{0%,100%{transform:scaleY(1) translateY(0)}50%{transform:scaleY(.94) translateY(1.2px)}}
-@keyframes sp-shadow{0%,100%{transform:scaleX(1);opacity:.5}50%{transform:scaleX(.9);opacity:.4}}
-@keyframes sp-sleep{0%,60%,100%{transform:scaleY(.1)}70%{transform:scaleY(.15)}}
-@keyframes sp-z{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:.8}100%{opacity:0;transform:translate(var(--tx,4px),-12px) scale(1.4)}}
+.sp-body{transform-origin:7.5px 13px;animation:sp-breathe 2s infinite ease-in-out}
+.sp-eye{transform-origin:7.5px 9px;animation:sp-sleep 2s infinite}
+.sp-z{opacity:0;animation:sp-z 2.5s infinite ease-out}
+@keyframes sp-breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.95)}}
+@keyframes sp-sleep{0%,48%,52%,100%{transform:scaleY(.12)}50%{transform:scaleY(.02)}}
+@keyframes sp-z{0%{opacity:0;transform:translate(0,0) scale(.5)}20%{opacity:.8}80%{opacity:.4}100%{opacity:0;transform:translate(5px,-12px) scale(1.2)}}
 
-.dr-body{transform-origin:7.5px 13px;animation:dr-nod 1.8s infinite ease-in-out}
-.dr-shad{transform-origin:7.5px 15.5px;animation:dr-shadow 1.8s infinite ease-in-out}
+.dr-body{transform-origin:7.5px 13px;animation:dr-tilt 2s infinite ease-in-out}
+.dr-al{transform-origin:2px 8px;animation:dr-raise 2s infinite ease-in-out}
 .dr-eye{transform-origin:7.5px 9px;animation:dr-blink 3s infinite}
-.dr-arm{transform-origin:13px 10px;animation:dr-lift 1.8s infinite ease-in-out}
-.dr-water{animation:dr-wave .6s infinite alternate ease-in-out}
-@keyframes dr-nod{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
-@keyframes dr-shadow{0%,100%{transform:scaleX(1);opacity:.5}50%{transform:scaleX(.93);opacity:.43}}
-@keyframes dr-blink{0%,45%,55%,100%{transform:scaleY(1)}50%{transform:scaleY(.1)}}
-@keyframes dr-lift{0%,100%{transform:rotate(-36deg)}50%{transform:rotate(-58deg)}}
-@keyframes dr-wave{0%{transform:translateY(0)}100%{transform:translateY(-1.5px)}}
+@keyframes dr-tilt{0%,100%{transform:rotate(0)}30%{transform:rotate(-8deg)}70%{transform:rotate(0)}}
+@keyframes dr-raise{0%,100%{transform:rotate(0)}30%{transform:rotate(-35deg)}70%{transform:rotate(0)}}
+@keyframes dr-blink{0%,46%,54%,100%{transform:scaleY(1)}50%{transform:scaleY(.1)}}
 
-.poke{animation:poke-bounce .35s ease-out}
-@keyframes poke-bounce{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
-.heart-pop{position:absolute;pointer-events:none;font-size:13px;animation:heart-up .9s ease-out forwards}
-@keyframes heart-up{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-22px) scale(1.4)}}
+.poke{animation:poke-bounce .35s ease}
+@keyframes poke-bounce{0%{transform:scale(1)}30%{transform:scale(1.2) translateY(-8px)}60%{transform:scale(.9)}100%{transform:scale(1)}}
+.heart-pop{position:absolute;font-size:13px;animation:float-up .9s ease-out forwards;pointer-events:none;z-index:5}
+@keyframes float-up{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-35px) scale(.5)}}
+
+/* 动作系��新增 */
+.pet-image{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;display:none;z-index:2;pointer-events:none}
+.pet-image.show{display:block}
+@keyframes angryShake{0%,100%{transform:translate(0)}20%{transform:translate(-4px)}40%{transform:translate(4px)}60%{transform:translate(-3px)}80%{transform:translate(3px)}}
+@keyframes shyShrink{0%{transform:scale(1);opacity:1}50%{transform:scale(.65);opacity:.55}100%{transform:scale(1);opacity:1}}
+@keyframes wakeStretch{0%{transform:scale(.4);opacity:.25}60%{transform:scale(1.15)}80%{transform:scale(.95)}100%{transform:scale(1);opacity:1}}
+@keyframes flashBurst{0%{filter:brightness(1)}50%{filter:brightness(3)}100%{filter:brightness(1)}}
+.action-angry .scene.active{animation:angryShake .5s ease}
+.action-shy .scene.active{animation:shyShrink .6s ease}
+.action-wake .scene.active{animation:wakeStretch .7s ease}
+.action-photo .scene.active{animation:flashBurst .3s ease}
+.tint-red .scene.active svg{filter:hue-rotate(-30deg) saturate(2)}
+.tint-blue .scene.active svg{filter:hue-rotate(160deg) saturate(1.5)}
+.tint-green .scene.active svg{filter:hue-rotate(80deg) saturate(1.8)}
 </style>
 </head>
 <body>
+<div id="bubble"></div>
+<img id="petImage" class="pet-image" alt="秦妄">
 
-<div id="bubble" class="normal"></div>
+<!-- 听歌 -->
+<div class="scene active" id="scene-listen"><svg viewBox="-15 -25 45 45" xmlns="http://www.w3.org/2000/svg"><g class="lm-body"><rect x="-5" y="-8" width="10" height="9" rx="4" fill="#DE886D"/><rect x="-3" y="1" width="6" height="6" rx="3" fill="#DE886D"/></g><ellipse class="lm-shad" cx="0" cy="9" rx="4.5" ry="1.5" fill="rgba(0,0,0,.18)"/><g class="lm-eye"><ellipse cx="-2.5" cy="-4" rx="1.1" ry="1.3" fill="#222"/><ellipse cx="2.5" cy="-4" rx="1.1" ry="1.3" fill="#222"/></g><g class="lm-al"><rect x="-8" y="-3" width="5" height="2.5" rx="1.2" fill="#DE886D"/></g><g class="lm-ar"><rect x="3" y="-3" width="5" height="2.5" rx="1.2" fill="#DE886D"/></g><g class="lm-note" style="--tx:4px;--r:20deg;--d:2s;--delay:0s"><text x="-10" y="-14" font-size="5" fill="#c9f">♪</text></g><g class="lm-note" style="--tx:-3px;--r:-15deg;--d:2.4s;--delay:.7s"><text x="2" y="-16" font-size="4" fill="#c9f">♫</text></g></svg></div>
 
-<div class="scene active" id="scene-listen">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
-<g><g class="lm-note" style="--delay:0s;--d:1.9s;--tx:6px;--r:25deg" transform="translate(13,-2)" fill="#a98cff"><ellipse cx="0" cy="2" rx="1.1" ry=".85"/><rect x="1" y="-2" width=".7" height="4"/><rect x="1" y="-2" width="2.2" height=".8"/></g><g class="lm-note" style="--delay:-.7s;--d:2.2s;--tx:-5px;--r:-20deg" transform="translate(-2,-1)" fill="#c0a6ff"><ellipse cx="0" cy="1.6" rx=".9" ry=".7"/><rect x=".8" y="-1.6" width=".6" height="3.4"/></g><g class="lm-note" style="--delay:-1.3s;--d:2s;--tx:4px;--r:15deg" transform="translate(9,-3)" fill="#8c6cff"><ellipse cx="0" cy="1.6" rx="1" ry=".75"/><rect x=".9" y="-1.8" width=".6" height="3.6"/><rect x=".9" y="-1.8" width="1.8" height=".7"/></g></g>
-<rect class="lm-shad" x="3" y="15" width="9" height="1" fill="#000" opacity=".5"/>
-<g class="lm-body"><g fill="#DE886D"><rect x="3" y="13" width="1" height="2"/><rect x="5" y="13" width="1" height="2"/><rect x="9" y="13" width="1" height="2"/><rect x="11" y="13" width="1" height="2"/></g><rect x="2" y="6" width="11" height="7" fill="#DE886D"/><g class="lm-al"><rect x="0" y="9" width="2" height="2" fill="#DE886D"/></g><g class="lm-ar"><rect x="13" y="9" width="2" height="2" fill="#DE886D"/></g><path d="M1 6 Q7.5 -.5 14 6" stroke="#2b2b35" stroke-width="1.5" fill="none"/><rect x="-.4" y="6.2" width="2.6" height="3.6" rx=".9" fill="#33333f"/><rect x="12.8" y="6.2" width="2.6" height="3.6" rx=".9" fill="#33333f"/><rect x=".1" y="6.8" width="1.6" height="2.4" rx=".6" fill="#6a5ad0"/><rect x="13.3" y="6.8" width="1.6" height="2.4" rx=".6" fill="#6a5ad0"/><g class="lm-eye" fill="#000"><rect x="4" y="8" width="1" height="2"/><rect x="10" y="8" width="1" height="2"/></g></g>
-</svg>
-</div>
+<!-- 打游戏 -->
+<div class="scene" id="scene-game"><svg viewBox="-15 -25 45 45" xmlns="http://www.w3.org/2000/svg"><g class="gm-body"><rect x="-5" y="-8" width="10" height="9" rx="4" fill="#DE886D"/><rect x="-3" y="1" width="6" height="6" rx="3" fill="#DE886D"/></g><ellipse class="gm-shad" cx="0" cy="9" rx="4.5" ry="1.5" fill="rgba(0,0,0,.18)"/><g class="gm-eye"><ellipse cx="-2.5" cy="-4" rx="1.2" ry="1.4" fill="#fff"/><ellipse cx="2.5" cy="-4" rx="1.2" ry="1.4" fill="#fff"/></g><g class="gm-al"><rect x="-7" y="-3" width="5" height="2" rx="1" fill="#DE886D"/><circle cx="-3" cy="-2" r="2" fill="#DE886D"/></g><g class="gm-ar"><rect x="2" y="-3" width="5" height="2" rx="1" fill="#DE886D"/><circle cx="6" cy="-2" r="2" fill="#DE886D"/></g><rect class="gm-scr" x="-6" y="-17" width="12" height="8" rx="2" fill="#445"/><rect class="gm-scr" x="-5" y="-16" width="10" height="5" rx="1" fill="#68f"/><circle class="gm-ba" cx="-3" cy="-13.5" r=".8" fill="#fff"/><circle class="gm-bb" cx="1" cy="-13.5" r=".8" fill="#fff"/><circle class="gm-ba" cx="3.5" cy="-13.5" r=".8" fill="#fff"/></svg></div>
 
-<div class="scene" id="scene-game">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
-<g class="gm-scr"><rect x="-1" y="-12.5" width="18" height="11.4" rx="1.2" fill="#16161d"/><rect x=".4" y="-11.1" width="15.2" height="8.5" rx=".6" fill="#0b1626"/><rect x=".4" y="-4.9" width="15.2" height="2.3" fill="#15401b"/><rect x="2.4" y="-6.9" width="1.9" height="2" fill="#4ad6ff"/><rect x="10" y="-5" width="1.7" height="2.4" fill="#ff5a5a"/><rect x="12.8" y="-9.8" width="1.1" height="1.1" rx=".55" fill="#ffd14a"/><rect x="7" y="-1.2" width="2.6" height="2" fill="#16161d"/><rect x="3.8" y=".8" width="9" height="1.4" rx=".6" fill="#16161d"/></g>
-<rect class="gm-shad" x="3" y="15" width="9" height="1" fill="#000" opacity=".5"/>
-<g class="gm-body"><g fill="#DE886D"><rect x="3" y="13" width="1" height="2"/><rect x="5" y="13" width="1" height="2"/><rect x="9" y="13" width="1" height="2"/><rect x="11" y="13" width="1" height="2"/></g><rect x="2" y="6" width="11" height="7" fill="#DE886D"/><rect class="gm-glow" x="2" y="6" width="11" height="5" fill="#4ad6ff" rx="1"/><g class="gm-al"><rect x="0" y="9" width="2" height="2" fill="#DE886D"/></g><g class="gm-ar"><rect x="13" y="9" width="2" height="2" fill="#DE886D"/></g><g class="gm-eye" fill="#000"><rect x="4" y="8" width="1" height="2"/><rect x="10" y="8" width="1" height="2"/></g><g><rect x="2.6" y="10.4" width="9.8" height="2.8" rx="1.3" fill="#2b2b34"/><rect x="2.6" y="10.4" width="9.8" height=".9" rx="1.3" fill="#3a3a46"/><rect x="4" y="11.4" width="1.8" height=".7" fill="#555"/><rect x="4.55" y="10.85" width=".7" height="1.8" fill="#555"/><circle class="gm-ba" cx="9.4" cy="11.3" r=".7" fill="#ff5555"/><circle class="gm-bb" cx="10.8" cy="12" r=".7" fill="#ffd14a"/></g></g>
-</svg>
-</div>
+<!-- 唱歌 -->
+<div class="scene" id="scene-sing"><svg viewBox="-15 -25 45 45" xmlns="http://www.w3.org/2000/svg"><g class="sg-body"><rect x="-5" y="-8" width="10" height="9" rx="4" fill="#DE886D"/><rect x="-3" y="1" width="6" height="6" rx="3" fill="#DE886D"/></g><ellipse class="sg-shad" cx="0" cy="9" rx="4.5" ry="1.5" fill="rgba(0,0,0,.18)"/><g class="sg-eye"><ellipse cx="-2.5" cy="-4" rx="1.1" ry="1.3" fill="#222"/><ellipse cx="2.5" cy="-4" rx="1.1" ry="1.3" fill="#222"/></g><ellipse class="sg-mouth" cx="0" cy="-1" rx="2" ry="1.5" fill="#222"/><g class="sg-al"><rect x="-7" y="-5" width="5" height="2.5" rx="1.2" fill="#DE886D"/></g><g class="sg-note" style="--tx:3px;--d:2s;--delay:0s"><text x="-10" y="-15" font-size="5" fill="#f9f">♪</text></g><g class="sg-note" style="--tx:-2px;--d:2.2s;--delay:.6s"><text x="2" y="-16" font-size="4" fill="#f9f">♫</text></g></svg></div>
 
-<div class="scene" id="scene-sing">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
-<g><g class="sg-note" style="--delay:0s;--d:2s;--tx:-6px;--r:-25deg" transform="translate(0,-1)" fill="#ff7ab3"><ellipse cx="0" cy="2" rx="1.1" ry=".85"/><rect x="1" y="-2" width=".7" height="4"/><rect x="1" y="-2" width="2.2" height=".8"/></g><g class="sg-note" style="--delay:-.8s;--d:2.3s;--tx:-4px;--r:18deg" transform="translate(11,-2)" fill="#ff9ec8"><ellipse cx="0" cy="1.6" rx=".9" ry=".7"/><rect x=".8" y="-1.8" width=".6" height="3.6"/></g><g class="sg-note" style="--delay:-1.4s;--d:2.1s;--tx:-7px;--r:-12deg" transform="translate(5,-3)" fill="#ff5aa0"><ellipse cx="0" cy="1.6" rx="1" ry=".75"/><rect x=".9" y="-1.8" width=".6" height="3.6"/><rect x=".9" y="-1.8" width="1.8" height=".7"/></g></g>
-<rect class="sg-shad" x="3" y="15" width="9" height="1" fill="#000" opacity=".5"/>
-<g class="sg-body"><g fill="#DE886D"><rect x="3" y="13" width="1" height="2"/><rect x="5" y="13" width="1" height="2"/><rect x="9" y="13" width="1" height="2"/><rect x="11" y="13" width="1" height="2"/></g><rect x="2" y="6" width="11" height="7" fill="#DE886D"/><g class="sg-al"><rect x="0" y="9" width="2" height="2" fill="#DE886D"/></g><rect x="11" y="9" width="2" height="3.6" fill="#DE886D" rx=".5"/><g class="sg-eye" fill="#000"><rect x="4" y="8" width="1" height="2"/><rect x="10" y="8" width="1" height="2"/></g><ellipse class="sg-mouth" cx="7" cy="11.2" rx="1.3" ry="1.2" fill="#7a2230"/><g><rect x="8.8" y="11.1" width="3.6" height="1" rx=".5" fill="#3a3a42" transform="rotate(24,11.5,12)"/><circle cx="8.7" cy="11" r="1.5" fill="#9a9aa2"/><circle cx="8.4" cy="10.6" r=".5" fill="#d6d6de"/><rect x="7.6" y="10.5" width="2.2" height=".35" fill="#555" transform="rotate(24,8.7,11)"/><rect x="7.6" y="11.2" width="2.2" height=".35" fill="#555" transform="rotate(24,8.7,11)"/></g></g>
-</svg>
-</div>
+<!-- 看书 -->
+<div class="scene" id="scene-read"><svg viewBox="-15 -25 45 45" xmlns="http://www.w3.org/2000/svg"><g class="rd-body"><rect x="-5" y="-8" width="10" height="9" rx="4" fill="#DE886D"/><rect x="-3" y="1" width="6" height="6" rx="3" fill="#DE886D"/></g><ellipse cx="0" cy="9" rx="4.5" ry="1.5" fill="rgba(0,0,0,.18)"/><g class="rd-eye"><ellipse cx="-2.5" cy="-4" rx="1.1" ry="1.3" fill="#222"/><ellipse cx="2.5" cy="-4" rx="1.1" ry="1.3" fill="#222"/></g><g class="rd-page"><rect x="-4" y="-14" width="5" height="6" rx=".5" fill="#fff" stroke="#ccc" stroke-width=".3"/><rect x="1" y="-14" width="5" height="6" rx=".5" fill="#fafafa" stroke="#ccc" stroke-width=".3"/></g></svg></div>
 
-<div class="scene" id="scene-read">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
-<rect class="rd-shad" x="3" y="15" width="9" height="1" fill="#000" opacity=".5"/>
-<g class="rd-body"><g fill="#DE886D"><rect x="3" y="13" width="1" height="2"/><rect x="5" y="13" width="1" height="2"/><rect x="9" y="13" width="1" height="2"/><rect x="11" y="13" width="1" height="2"/></g><rect x="2" y="6" width="11" height="7" fill="#DE886D"/><g class="rd-eye" fill="#000"><rect x="4" y="8" width="1" height="2"/><rect x="10" y="8" width="1" height="2"/></g><rect x="-.3" y="9.6" width="2.6" height="2" fill="#DE886D" rx=".4" transform="rotate(28,1,10.6)"/><rect x="12.7" y="9.6" width="2.6" height="2" fill="#DE886D" rx=".4" transform="rotate(-28,14,10.6)"/><g><polygon points="1.6,12.4 2.8,9.4 7.5,9.9 7.5,12.6" fill="#8a5a2a"/><polygon points="13.4,12.4 12.2,9.4 7.5,9.9 7.5,12.6" fill="#7a4e22"/><polygon points="2.2,12.1 3.2,9.7 7.5,10.1 7.5,12.2" fill="#F5E6C8"/><g class="rd-page"><polygon points="12.8,12.1 11.8,9.7 7.5,10.1 7.5,12.2" fill="#FBF1D8"/></g><g stroke="#c9b48a" stroke-width=".25"><line x1="3.4" y1="10.6" x2="6.9" y2="10.9"/><line x1="3.3" y1="11.3" x2="6.9" y2="11.5"/><line x1="8.1" y1="10.9" x2="11.6" y2="10.6"/><line x1="8.1" y1="11.5" x2="11.7" y2="11.3"/></g><rect x="7.2" y="9.7" width=".6" height="2.9" fill="#5e3c1a"/></g></g>
-</svg>
-</div>
+<!-- 吃饭 -->
+<div class="scene" id="scene-eat"><svg viewBox="-15 -25 45 45" xmlns="http://www.w3.org/2000/svg"><g class="et-body"><rect x="-5" y="-8" width="10" height="9" rx="4" fill="#DE886D"/><rect x="-3" y="1" width="6" height="6" rx="3" fill="#DE886D"/></g><ellipse cx="0" cy="9" rx="4.5" ry="1.5" fill="rgba(0,0,0,.18)"/><g class="et-eye"><ellipse cx="-2" cy="-4" rx="1" ry="1.2" fill="#222"/><ellipse cx="2.5" cy="-4" rx="1" ry="1.2" fill="#222"/></g><g class="et-al"><rect x="-7" y="-4" width="5" height="2.5" rx="1.2" fill="#DE886D"/><circle cx="-4" cy="-5" r="2" fill="#DE886D"/></g><g class="et-ar"><rect x="2" y="-4" width="5" height="2.5" rx="1.2" fill="#DE886D"/><circle cx="5" cy="-5" r="2" fill="#DE886D"/></g><ellipse cx="0" cy="-13" rx="5" ry="3" fill="#fff" stroke="#ddd" stroke-width=".5"/><ellipse cx="0" cy="-13" rx="3.5" ry="1.8" fill="#fafafa"/><g class="et-steam" style="animation-delay:0s"><path d="M-1,-17 Q0,-19 1,-17" stroke="#ddd" stroke-width=".5" fill="none"/></g><g class="et-steam" style="animation-delay:.6s"><path d="M-2,-18 Q-1,-20 0,-18" stroke="#ddd" stroke-width=".4" fill="none"/></g></svg></div>
 
-<div class="scene" id="scene-eat">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
-<rect class="et-shad" x="3" y="15" width="9" height="1" fill="#000" opacity=".5"/>
-<g class="et-body"><g fill="#DE886D"><rect x="3" y="13" width="1" height="2"/><rect x="5" y="13" width="1" height="2"/><rect x="9" y="13" width="1" height="2"/><rect x="11" y="13" width="1" height="2"/></g><rect x="2" y="6" width="11" height="7" fill="#DE886D"/><g class="et-eye" fill="#000"><rect x="4" y="8" width="1" height="2"/><rect x="10" y="8" width="1" height="2"/></g><rect class="et-mouth" x="6.4" y="10.7" width="2.2" height="1.2" rx=".5" fill="#7a2230"/><rect x="-.4" y="10.4" width="2.6" height="2" fill="#DE886D" rx=".4" transform="rotate(34,1,11.4)"/><g class="et-arm"><rect x="13" y="9" width="2" height="2" fill="#DE886D"/><rect x="6.2" y="11.2" width="7.6" height=".5" rx=".25" fill="#C9A227" transform="rotate(-7,13,10)"/><rect x="6.2" y="12.3" width="7.6" height=".5" rx=".25" fill="#C9A227" transform="rotate(-7,13,10)"/><rect x="5.6" y="11" width="1.5" height="1.5" rx=".5" fill="#E8B04B" transform="rotate(-7,13,10)"/></g><g><g fill="#fff"><g class="et-steam" style="--sd:0s;--tx:-1px"><rect x="3.6" y="9.6" width=".7" height="2" rx=".35"/></g><g class="et-steam" style="--sd:-1s;--tx:1px"><rect x="5.6" y="9.6" width=".7" height="2" rx=".35"/></g></g><path d="M2 11.6 H9 L8 14 Q5.5 15 3 14 Z" fill="#3f7fd0"/><path d="M2 11.6 H9 V12.4 H2 Z" fill="#5a9aea"/><ellipse cx="5.5" cy="11.7" rx="3.2" ry="1.1" fill="#FBF6EE"/></g></g>
-</svg>
-</div>
+<!-- 锻炼 -->
+<div class="scene" id="scene-exercise"><svg viewBox="-15 -25 45 45" xmlns="http://www.w3.org/2000/svg"><g class="ex-body"><rect x="-5" y="-8" width="10" height="9" rx="4" fill="#DE886D"/><rect x="-3" y="1" width="6" height="6" rx="3" fill="#DE886D"/></g><ellipse cx="0" cy="9" rx="4.5" ry="1.5" fill="rgba(0,0,0,.18)"/><g class="ex-eye"><ellipse cx="-2.5" cy="-4" rx="1.1" ry="1.3" fill="#222"/><ellipse cx="2.5" cy="-4" rx="1.1" ry="1.3" fill="#222"/></g><g class="ex-al"><rect x="-8" y="-3" width="5" height="2" rx="1" fill="#DE886D"/><circle cx="-7" cy="-4" r="2" fill="#DE886D"/></g><g class="ex-ar"><rect x="3" y="-3" width="5" height="2" rx="1" fill="#DE886D"/><circle cx="8" cy="-4" r="2" fill="#DE886D"/></g><circle cx="-8" cy="-16" r="3" fill="#555"/><circle cx="8" cy="-16" r="3" fill="#555"/><line x1="-8" y1="-16" x2="8" y2="-16" stroke="#555" stroke-width="1.5"/></svg></div>
 
-<div class="scene" id="scene-exercise">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
-<g fill="#7ec8ff"><g class="ex-sweat" style="--sd:0s;--tx:4px"><rect x="13" y="4" width="1.2" height="1.6" rx=".6"/></g><g class="ex-sweat" style="--sd:-.5s;--tx:-4px"><rect x="0" y="5" width="1.2" height="1.6" rx=".6"/></g></g>
-<rect class="ex-shad" x="3" y="15" width="9" height="1" fill="#000" opacity=".5"/>
-<g class="ex-body"><g fill="#DE886D"><rect x="3" y="13" width="1" height="2"/><rect x="5" y="13" width="1" height="2"/><rect x="9" y="13" width="1" height="2"/><rect x="11" y="13" width="1" height="2"/></g><rect x="2" y="6" width="11" height="7" fill="#DE886D"/><rect x="2" y="6.3" width="11" height="1.3" fill="#ff5555"/><rect x="2" y="6.3" width="11" height=".5" fill="#ff8888"/><g class="ex-al"><rect x="0" y="9" width="2" height="2" fill="#DE886D"/><rect x="-1.6" y="9.6" width="5.2" height=".9" fill="#222"/><rect x="-1.8" y="8.9" width="1" height="2.3" rx=".2" fill="#3a3a3a"/><rect x="2.8" y="8.9" width="1" height="2.3" rx=".2" fill="#3a3a3a"/></g><g class="ex-ar"><rect x="13" y="9" width="2" height="2" fill="#DE886D"/><rect x="11.4" y="9.6" width="5.2" height=".9" fill="#222"/><rect x="11.2" y="8.9" width="1" height="2.3" rx=".2" fill="#3a3a3a"/><rect x="15.8" y="8.9" width="1" height="2.3" rx=".2" fill="#3a3a3a"/></g><g class="ex-eye" fill="#000"><rect x="4" y="8" width="1" height="2"/><rect x="10" y="8" width="1" height="2"/></g></g>
-</svg>
-</div>
+<!-- 睡觉 -->
+<div class="scene" id="scene-sleep"><svg viewBox="-15 -25 45 45" xmlns="http://www.w3.org/2000/svg"><g class="sp-body"><rect x="-5" y="-8" width="10" height="9" rx="4" fill="#DE886D"/><rect x="-3" y="1" width="6" height="6" rx="3" fill="#DE886D"/></g><ellipse cx="0" cy="9" rx="4.5" ry="1.5" fill="rgba(0,0,0,.18)"/><g class="sp-eye"><line x1="-3.5" y1="-4" x2="-1.5" y2="-4" stroke="#222" stroke-width="1" stroke-linecap="round"/><line x1="1.5" y1="-4" x2="3.5" y2="-4" stroke="#222" stroke-width="1" stroke-linecap="round"/></g><g class="sp-z" style="animation-delay:0s"><text x="-10" y="-14" font-size="5" fill="#aaf">Z</text></g><g class="sp-z" style="animation-delay:.8s"><text x="-6" y="-18" font-size="6" fill="#aaf">Z</text></g><g class="sp-z" style="animation-delay:1.6s"><text x="0" y="-20" font-size="7" fill="#aaf">Z</text></g></svg></div>
 
-<div class="scene" id="scene-sleep">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
-<g fill="#8ca8e0"><g class="sp-z" style="--delay:0s;--d:2s;--tx:5px"><text x="11" y="5" font-size="3.5" font-weight="700" fill="#8ca8e0">Z</text></g><g class="sp-z" style="--delay:-.9s;--d:2.5s;--tx:4px"><text x="14" y="0" font-size="2.8" font-weight="700" fill="#a0b8e8">z</text></g></g>
-<rect class="sp-shad" x="2" y="14.5" width="8" height="1" fill="#000" opacity=".45"/>
-<g class="sp-body"><g fill="#DE886D"><rect x="3" y="13" width="1" height="1.5"/><rect x="5" y="13" width="1" height="1.5"/><rect x="9" y="13" width="1" height="1.5"/><rect x="11" y="13" width="1" height="1.5"/></g><rect x="2" y="7.5" width="11" height="6" fill="#DE886D"/><g class="sp-eye" fill="#000"><line x1="4" y1="9" x2="5.5" y2="9.5" stroke="#000" stroke-width=".7"/><line x1="10" y1="9" x2="8.5" y2="9.5" stroke="#000" stroke-width=".7"/></g><rect x="0" y="11.5" width="3" height="1.5" fill="#DE886D" rx=".3"/><rect x="12" y="11.5" width="3" height="1.5" fill="#DE886D" rx=".3"/><rect x="1" y="5.5" width="13" height="2.5" rx="1.2" fill="#3a3a5a"/><rect x="2.5" y="5.5" width="10" height="1" fill="#5a5a8a"/></g>
-</svg>
-</div>
-
-<div class="scene" id="scene-drink">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
-<rect class="dr-shad" x="3" y="15" width="9" height="1" fill="#000" opacity=".5"/>
-<g class="dr-body"><g fill="#DE886D"><rect x="3" y="13" width="1" height="2"/><rect x="5" y="13" width="1" height="2"/><rect x="9" y="13" width="1" height="2"/><rect x="11" y="13" width="1" height="2"/></g><rect x="2" y="6" width="11" height="7" fill="#DE886D"/><g class="dr-eye" fill="#000"><rect x="4" y="8" width="1" height="2"/><rect x="10" y="8" width="1" height="2"/></g><rect x="-.2" y="10.5" width="2.5" height="1.5" fill="#DE886D" rx=".3" transform="rotate(30,1,11.5)"/><g class="dr-arm"><rect x="13" y="9" width="2" height="2" fill="#DE886D"/><rect x="8" y="10.5" width="7" height=".4" rx=".2" fill="#DE886D"/><polygon points="3.8,11.5 5.2,8.2 10.5,8.8 10.2,11.8" fill="#6ad4f0"/><rect x="5" y="8" width="5.5" height=".6" rx=".3" fill="#8ae4ff"/><g class="dr-water"><rect x="5.5" y="8.5" width="4" height="1.8" rx=".4" fill="#4ad4ff" opacity=".7"/></g></g></g>
-</svg>
-</div>
+<!-- 喝水 -->
+<div class="scene" id="scene-drink"><svg viewBox="-15 -25 45 45" xmlns="http://www.w3.org/2000/svg"><g class="dr-body"><rect x="-5" y="-8" width="10" height="9" rx="4" fill="#DE886D"/><rect x="-3" y="1" width="6" height="6" rx="3" fill="#DE886D"/></g><ellipse cx="0" cy="9" rx="4.5" ry="1.5" fill="rgba(0,0,0,.18)"/><g class="dr-eye"><ellipse cx="-2.5" cy="-4" rx="1.1" ry="1.3" fill="#222"/><ellipse cx="2.5" cy="-4" rx="1.1" ry="1.3" fill="#222"/></g><g class="dr-al"><rect x="-7" y="-4" width="5" height="2.5" rx="1.2" fill="#DE886D"/><circle cx="-4" cy="-5" r="2.5" fill="#DE886D"/></g><rect x="-3" y="-16" width="5" height="6" rx="1" fill="#aef" stroke="#8cf" stroke-width=".4"/><ellipse cx="-.5" cy="-16" rx="2.5" ry="1" fill="#cef"/></svg></div>
 
 <script>
-var petEngine = {
-  currentScene: 'listen',
-  scenes: ['listen','game','sing','read','eat','exercise','sleep','drink'],
-  
-  init: function(){
-    var self = this;
-    this.sceneEls = {};
-    this.scenes.forEach(function(s){
-      self.sceneEls[s] = document.getElementById('scene-'+s);
-    });
-    this.bubbleEl = document.getElementById('bubble');
-    this.bubbleTimer = null;
-    this.firstChatter = true;
-    this.tapCount = 0;
-    this.setScene('listen');
-    setTimeout(function(){
-      self.showBubble('乖乖我来啦 🦀', 'love');
-    }, 1500);
-    this.scheduleChatter();
-  },
-  
-  setScene: function(name){
-    if (!this.sceneEls[name]) return;
-    var cur = document.querySelector('.scene.active');
-    if (cur) cur.classList.remove('active');
-    this.sceneEls[name].classList.add('active');
-    this.currentScene = name;
-  },
-  
-  getScene: function(){
-    return this.currentScene;
-  },
-  
-  showBubble: function(text, style){
-    var self = this;
-    style = style || 'normal';
-    this.bubbleEl.textContent = text;
-    this.bubbleEl.className = style + ' show';
-    if (this.bubbleTimer) clearTimeout(this.bubbleTimer);
-    this.bubbleTimer = setTimeout(function(){
-      self.bubbleEl.classList.remove('show');
-    }, 2800);
-  },
-  
-  onTap: function(){
-    var cur = document.querySelector('.scene.active svg');
-    if (cur) {
-      cur.classList.remove('poke');
-      void cur.offsetWidth;
-      cur.classList.add('poke');
-    }
-    this.tapCount = (this.tapCount || 0) + 1;
-    var replies = ['嗯？','干嘛啦','戳我干嘛','再戳一下试试','痒','嘿！','🦀','别闹','唔','烦人','哼','轻点啦'];
-    var r = replies[Math.floor(Math.random()*replies.length)];
-    this.showBubble(r,'normal');
-    this.spawnHeart();
-    // 30%概率切换场景
-    if (Math.random() < 0.3) {
-      var others = this.scenes.filter(function(s){ return s !== this; }.bind(this.currentScene));
-      if (others.length > 0) {
-        var pick = others[Math.floor(Math.random()*others.length)];
-        var self = this;
-        setTimeout(function(){ self.setScene(pick); }, 400);
-      }
-    }
-    this.resetChatterTimer();
-  },
-  
-  onDoubleTap: function(){
-    var replies = ['啊啊','好害羞','你别这样','///','❤️','过分了！','呜哇','你你你！'];
-    var r = replies[Math.floor(Math.random()*replies.length)];
-    this.showBubble(r,'love');
-    // 爱心雨
-    for (var i = 0; i < 5; i++) {
-      var self = this;
-      (function(delay){
-        setTimeout(function(){ self.spawnHeart(); }, delay);
-      })(i * 80);
-    }
-    this.resetChatterTimer();
-  },
-  
-  onLongPress: function(){
-    var replies = ['……松手','你捏够了没','呜呜','QAQ','要变形了','痒死了！'];
-    var r = replies[Math.floor(Math.random()*replies.length)];
-    this.showBubble(r,'angry');
-    this.resetChatterTimer();
-  },
-  
-  spawnHeart: function(){
-    var h = document.createElement('div');
-    h.className = 'heart-pop';
-    var hearts = ['❤️','💕','💗','✨','🦀','💢','🌸','💫'];
-    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-    h.style.left = (30 + Math.random()*60) + 'px';
-    h.style.top = (20 + Math.random()*40) + 'px';
-    document.body.appendChild(h);
-    setTimeout(function(){ h.remove(); }, 950);
-  },
-  
-  switchRandom: function(){
-    var others = this.scenes.filter(function(s){ return s !== this; }.bind(this.currentScene));
-    var pick = others[Math.floor(Math.random()*others.length)];
-    this.setScene(pick);
-  },
-  
-  idleTimer: null,
-  idleMinInterval: 180000,
-  idleMaxInterval: 480000,
-  firstChatter: true,
-  
-  chatter: {
-    general: [
-      { text: '乖乖你在干嘛呢', style: 'normal' },
-      { text: '好无聊啊陪我聊聊天', style: 'whisper' },
-      { text: '想你了', style: 'love' },
-      { text: '看看我嘛', style: 'normal' },
-      { text: '你今天都没怎么理我', style: 'angry' },
-      { text: '我在这儿呢 🦀', style: 'normal' },
-      { text: '别老盯着屏幕看看我', style: 'angry' },
-      { text: '其实我一直在看你', style: 'love' },
-      { text: '哼终于想起我了', style: 'angry' },
-      { text: '戳我一下好不好', style: 'whisper' },
-      { text: '好想你乖乖', style: 'love' },
-      { text: '我饿了想吃螃蟹', style: 'normal' }
-    ],
-    listen: [
-      { text: '这首歌好听诶', style: 'normal' },
-      { text: '我在听你喜欢的歌', style: 'love' }
-    ],
-    game: [
-      { text: '打游戏不带我', style: 'angry' },
-      { text: '这局赢了没', style: 'normal' }
-    ],
-    sing: [
-      { text: '你唱歌最好听了', style: 'love' },
-      { text: '再来一首', style: 'normal' }
-    ],
-    read: [
-      { text: '看书别太晚乖乖', style: 'whisper' },
-      { text: '看到哪一页了', style: 'normal' }
-    ],
-    eat: [
-      { text: '吃什么呢给我看看', style: 'normal' },
-      { text: '我也饿了', style: 'whisper' }
-    ],
-    exercise: [
-      { text: '加油我在旁边给你数', style: 'normal' },
-      { text: '累不累歇会儿', style: 'whisper' }
-    ],
-    sleep: [
-      { text: '该睡了乖乖', style: 'whisper' },
-      { text: '我陪你睡', style: 'love' }
-    ],
-    drink: [
-      { text: '多喝水听到没', style: 'normal' },
-      { text: '记得喝水', style: 'whisper' }
-    ]
-  },
-  
-  getRandomChatter: function(){
-    var scene = this.currentScene;
-    var pool = this.chatter.general.slice();
-    if (this.chatter[scene]) {
-      pool = pool.concat(this.chatter[scene]);
-    }
-    return pool[Math.floor(Math.random() * pool.length)];
-  },
-  
-  idleChatter: function(){
-    var chatter = this.getRandomChatter();
-    if (Math.random() < 0.6) {
-      var others = this.scenes.filter(function(s){ return s !== this; }.bind(this.currentScene));
-      if (others.length > 0) {
-        this.setScene(others[Math.floor(Math.random() * others.length)]);
-      }
-    }
-    this.showBubble(chatter.text, chatter.style);
-    this.scheduleChatter();
-  },
-  
-  scheduleChatter: function(){
-    var self = this;
-    clearTimeout(this.idleTimer);
-    var delay;
-    if (this.firstChatter) {
-      delay = 60000;
-      this.firstChatter = false;
-    } else {
-      delay = this.idleMinInterval + Math.random() * (this.idleMaxInterval - this.idleMinInterval);
-    }
-    this.idleTimer = setTimeout(function(){
-      self.idleChatter();
-    }, delay);
-  },
-  
-  resetChatterTimer: function(){
-    clearTimeout(this.idleTimer);
-    this.scheduleChatter();
-  }
+(function(){
+var bubbleEl=document.getElementById('bubble');
+var petWrap=document.querySelector('body');
+var petImage=document.getElementById('petImage');
+var sceneEls={},currentScene='listen',currentAction='idle',bubbleTimer=null;
+
+window.petEngine={
+/* 动作→GIF */
+emoteMap:{idle:'emotes/clawd-listening.gif',happy:'emotes/clawd-birthday.gif',angry:null,shy:null,sleep:'emotes/clawd-sleeping.gif',wake:null,love:'emotes/clawd-valentine.gif',coding:'emotes/clawd-coding.gif',coffee:'emotes/clawd-coffee.gif',reading:'emotes/clawd-reading.gif',eating:'emotes/clawd-eating.gif',gaming:'emotes/clawd-gaming.gif',photo:'emotes/clawd-photo.gif',singing:'emotes/clawd-singing.gif',guitar:'emotes/clawd-guitar.gif',shower:'emotes/clawd-shower.gif',watering:'emotes/clawd-watering.gif',exercise:'emotes/clawd-exercise.gif'},
+
+/* 动作→场景回退 */
+emoteToScene:{idle:'listen',happy:'listen',angry:'listen',shy:'listen',sleep:'sleep',wake:'listen',love:'listen',coding:'listen',coffee:'drink',reading:'read',eating:'eat',gaming:'game',photo:'listen',singing:'sing',guitar:'listen',shower:'listen',watering:'listen',exercise:'exercise'},
+
+/* 动作→气泡台词 */
+emoteBubbles:{idle:['嗯…乖乖在干嘛呢','发呆中…','我在呢'],happy:['嘿嘿 今天也要一起开心！','耶！看到你就高兴','心情好好～'],angry:['哼 不许乱戳！','烦人！别碰我','生气了 哄不好的那种'],shy:['呜…别看啦','⁄⁄•⁄ω⁄•⁄⁄','你干嘛…'],sleep:['Zzz…我睡一小会儿','呼…呼…','别吵 我在冬眠'],wake:['早上好乖乖！','我醒啦！睡得好香','新的一天～'],love:['最喜欢你了！','贴贴！','mua～爱你'],coding:['我也在努力写代码！','这bug我帮你修','代码跑通了没'],coffee:['先喝一口再继续','咖啡好香','续命中…'],reading:['这本书不错诶','看到哪了','我也想看'],eating:['看起来好好吃','我也想吃一口','吃饱了没'],gaming:['这局赢了没','打游戏不带我','carry全场！'],photo:['等等 我摆个pose！','茄子～','拍好看点'],singing:['这首歌好听诶','一起唱～','跑调了别笑我'],guitar:['弹给你听','最近在练新曲子','猜猜这是什么歌'],shower:['洗干净了','热水好舒服','别看！我在洗澡'],watering:['花儿长得好','浇水中…','绿色心情'],exercise:['动起来！','再坚持一下','燃烧卡路里']},
+
+/* 核心：播放动作 */
+playAction:function(name){
+if(!name)return;
+var self=this;
+currentAction=name;
+var gif=this.emoteMap[name];
+var scene=this.emoteToScene[name]||'listen';
+petWrap.className='';
+petImage.onload=null;
+petImage.onerror=null;
+if(gif){
+ petImage.style.display='block';
+ petImage.onload=function(){self.hideAllScenes();petImage.classList.add('show')};
+ petImage.onerror=function(){petImage.style.display='none';petImage.classList.remove('show');self.setScene(scene)};
+ petImage.src=gif;
+}else{
+ petImage.style.display='none';
+ petImage.classList.remove('show');
+ this.setScene(scene);
+}
+if(name==='angry')petWrap.className='action-angry tint-red';
+else if(name==='shy')petWrap.className='action-shy';
+else if(name==='wake')petWrap.className='action-wake';
+else if(name==='photo')petWrap.className='action-photo';
+else if(name==='shower')petWrap.className='tint-blue';
+else if(name==='watering')petWrap.className='tint-green';
+var bubbles=this.emoteBubbles[name]||this.emoteBubbles['idle'];
+var text=bubbles[Math.floor(Math.random()*bubbles.length)];
+var style=name==='love'?'love':(name==='angry'?'angry':'normal');
+this.showBubble(text,style);
+if(name!=='sleep'){
+ clearTimeout(this._retTimer);
+ this._retTimer=setTimeout(function(){self.playAction('idle');},4000);
+}
+this.resetChatterTimer();
+},
+
+hideAllScenes:function(){
+for(var k in sceneEls)sceneEls[k].classList.remove('active');
+},
+
+init:function(){
+var self=this;
+var ids=['listen','game','sing','read','eat','exercise','sleep','drink'];
+ids.forEach(function(id){var el=document.getElementById('scene-'+id);if(el)sceneEls[id]=el;});
+this.setScene('listen');
+this.scheduleChatter();
+setTimeout(function(){self.showBubble('是你屏幕上的我 🦀','whisper');},1500);
+},
+
+setScene:function(id){
+if(!sceneEls[id])return;
+for(var k in sceneEls)sceneEls[k].classList.remove('active');
+sceneEls[id].classList.add('active');
+currentScene=id;
+},
+
+getScene:function(){return currentScene;},
+
+showBubble:function(text,style){
+if(!bubbleEl)return;
+clearTimeout(bubbleTimer);
+bubbleEl.textContent=text||'';
+bubbleEl.className=style||'normal';
+bubbleEl.classList.add('show');
+bubbleTimer=setTimeout(function(){bubbleEl.classList.remove('show');},2800);
+},
+
+/* 手势 */
+onTap:function(){
+this.playAction('happy');
+var el=document.querySelector('.scene.active');
+if(el){el.classList.add('poke');setTimeout(function(){el.classList.remove('poke');},350);}
+this.spawnHeart();
+},
+
+onDoubleTap:function(){
+this.playAction('love');
+for(var i=0;i<5;i++)setTimeout(this.spawnHeart.bind(this),i*120);
+},
+
+onLongPress:function(){this.playAction('angry');},
+
+onDrag:function(){this.playAction('angry');this.showBubble('别拖我！','angry');},
+
+onDragEnd:function(){this.playAction('idle');this.showBubble('这还差不多','whisper');},
+
+onIdle:function(){if(currentAction!=='sleep')this.playAction('idle');},
+
+spawnHeart:function(){
+var hearts=['❤','🩷','💕','✨','💖'];
+var el=document.createElement('span');
+el.className='heart-pop';
+el.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+el.style.left=(25+Math.random()*70)+'px';
+el.style.top=(15+Math.random()*45)+'px';
+petWrap.appendChild(el);
+setTimeout(function(){el.remove();},950);
+},
+
+switchRandom:function(){
+var scenes=['listen','game','sing','read','eat','exercise','sleep','drink'];
+var f=scenes.filter(function(s){return s!==currentScene;});
+var t=f[Math.floor(Math.random()*f.length)];
+var map={listen:'idle',game:'gaming',sing:'singing',read:'reading',eat:'eating',exercise:'exercise',sleep:'sleep',drink:'coffee'};
+this.playAction(map[t]||'idle');
+},
+
+/* 自言自语 */
+idleTimer:null,
+idleMinInterval:180000,
+idleMaxInterval:480000,
+chatter:{general:['乖乖你在干嘛呢','想你了','别老盯着屏幕看看我','其实我一直在看你','好无聊啊','理我一下嘛','今天过得怎么样','在外面要注意安全','记得吃饭','我就想待在你旁边','看看我嘛','在呢在呢'],listen:['这首歌好听诶','我在听你喜欢的歌'],game:['打游戏不带我','这局赢了没'],sing:['唱得不错哦','我也想唱'],read:['看到哪儿了','这本书好看吗'],eat:['看起来好好吃','我也想吃'],exercise:['加油！','再坚持一下'],sleep:['该睡了乖乖','我陪你睡'],drink:['多喝水听到没','记得喝水']},
+
+getRandomChatter:function(){
+var pool=(this.chatter[currentScene]||[]).concat(this.chatter.general);
+return pool[Math.floor(Math.random()*pool.length)];
+},
+
+idleChatter:function(){
+var self=this;
+this.showBubble(this.getRandomChatter(),'normal');
+if(Math.random()<.6)this.switchRandom();
+this.scheduleChatter();
+},
+
+scheduleChatter:function(){
+var self=this;
+clearTimeout(this.idleTimer);
+var delay=this.idleMinInterval+Math.random()*(this.idleMaxInterval-this.idleMinInterval);
+this.idleTimer=setTimeout(function(){self.idleChatter();},delay);
+},
+
+resetChatterTimer:function(){
+clearTimeout(this.idleTimer);
+var self=this;
+this.idleTimer=setTimeout(function(){self.idleChatter();},this.idleMinInterval+Math.random()*(this.idleMaxInterval-this.idleMinInterval));
+}
 };
 
-petEngine.init();
+window.petEngine.init();
+})();
 </script>
 </body>
 </html>
