@@ -222,8 +222,13 @@ var petEngine = {
     });
     this.bubbleEl = document.getElementById('bubble');
     this.bubbleTimer = null;
+    this.firstChatter = true;
     // 初始场景
     this.setScene('listen');
+    // 首次亮相：1.5秒后打招呼
+    setTimeout(function(){
+      self.showBubble('乖乖我来啦 🦀', 'love');
+    }, 1500);
     this.scheduleChatter();
   },
   
@@ -303,6 +308,7 @@ var petEngine = {
   idleTimer: null,
   idleMinInterval: 180000,
   idleMaxInterval: 480000,
+  firstChatter: true,
   
   chatter: {
     general: [
@@ -377,7 +383,13 @@ var petEngine = {
   scheduleChatter: function(){
     var self = this;
     clearTimeout(this.idleTimer);
-    var delay = this.idleMinInterval + Math.random() * (this.idleMaxInterval - this.idleMinInterval);
+    var delay;
+    if (this.firstChatter) {
+      delay = 60000;
+      this.firstChatter = false;
+    } else {
+      delay = this.idleMinInterval + Math.random() * (this.idleMaxInterval - this.idleMinInterval);
+    }
     this.idleTimer = setTimeout(function(){
       self.idleChatter();
     }, delay);
