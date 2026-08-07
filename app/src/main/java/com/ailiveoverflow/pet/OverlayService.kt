@@ -61,7 +61,6 @@ class OverlayService : Service() {
 
         overlayView = WebView(this).apply {
             setBackgroundColor(0x00000000)
-            isOpaque = false
             settings.apply {
                 javaScriptEnabled = true
                 domStorageEnabled = true
