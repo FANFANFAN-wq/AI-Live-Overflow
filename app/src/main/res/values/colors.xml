@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#DE886D</color>
+    <color name="petPink">#DE886D</color>
+    <color name="petBg">#FFF5F0</color>
+    <color name="petCard">#FFFFFF</color>
+    <color name="petTextPrimary">#333333</color>
+    <color name="petTextSecondary">#888888</color>
+    <color name="petAccent">#F0A090</color>
 </resources>
