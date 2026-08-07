@@ -7,20 +7,17 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 
-/* 场景容器 */
 .scene{position:absolute;top:0;left:0;width:100%;height:100%;display:none;align-items:center;justify-content:center}
 .scene.active{display:flex}
-.scene svg{width:130px;height:130px}
+.scene svg{width:100px;height:100px}
 
-/* 气泡 */
-#bubble{position:absolute;top:-36px;left:50%;transform:translateX(-50%);padding:4px 10px;border-radius:10px;font-size:11px;font-family:'Segoe UI',system-ui,sans-serif;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .25s;z-index:10;max-width:140px;text-align:center;line-height:1.3}
+#bubble{position:absolute;top:-32px;left:50%;transform:translateX(-50%);padding:4px 10px;border-radius:10px;font-size:10px;font-family:'Segoe UI',system-ui,sans-serif;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .25s;z-index:10;max-width:130px;text-align:center;line-height:1.3}
 #bubble.show{opacity:1}
 #bubble.normal{background:rgba(40,40,50,.92);color:#e8e8e8;border:1px solid rgba(255,255,255,.1)}
 #bubble.love{background:rgba(255,120,160,.92);color:#fff;border:1px solid rgba(255,180,200,.3)}
 #bubble.angry{background:rgba(255,70,70,.92);color:#fff;border:1px solid rgba(255,120,120,.3)}
-#bubble.whisper{background:rgba(90,90,110,.85);color:#ccc;border:1px solid rgba(255,255,255,.08);font-size:10px}
+#bubble.whisper{background:rgba(90,90,110,.85);color:#ccc;border:1px solid rgba(255,255,255,.08);font-size:9px}
 
-/* === 1. 听歌 === */
 .lm-body{transform-origin:7.5px 13px;animation:lm-groove 1.1s infinite ease-in-out}
 .lm-shad{transform-origin:7.5px 15.5px;animation:lm-shadow 1.1s infinite ease-in-out}
 .lm-eye{transform-origin:7.5px 9px;animation:lm-blink 3s infinite}
@@ -34,7 +31,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 @keyframes lm-tap-r{0%{transform:rotate(0)}100%{transform:rotate(-22deg)}}
 @keyframes lm-note{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:1}80%{opacity:.85}100%{opacity:0;transform:translate(var(--tx,4px),-19px) rotate(var(--r,20deg))}}
 
-/* === 2. 游戏 === */
 .gm-body{transform-origin:7.5px 13px;animation:gm-lean 2.4s infinite ease-in-out}
 .gm-shad{transform-origin:7.5px 15.5px;animation:gm-shadow 2.4s infinite ease-in-out}
 .gm-eye{transform-origin:7.5px 9px;animation:gm-blink 2.8s infinite}
@@ -53,7 +49,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 @keyframes gm-press{0%{transform:translateY(-.3px)}100%{transform:translateY(.5px)}}
 @keyframes gm-glow{0%{opacity:.1}100%{opacity:.26}}
 
-/* === 3. 唱歌 === */
 .sg-body{transform-origin:7.5px 13px;animation:sg-sway 1.4s infinite ease-in-out}
 .sg-shad{transform-origin:7.5px 15.5px;animation:sg-shadow 1.4s infinite ease-in-out}
 .sg-eye{transform-origin:7.5px 9px;animation:sg-blink 2.8s infinite}
@@ -67,7 +62,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 @keyframes sg-wave{0%,100%{transform:rotate(42deg)}50%{transform:rotate(78deg) translateY(-1px)}}
 @keyframes sg-note{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:1}80%{opacity:.85}100%{opacity:0;transform:translate(var(--tx,-5px),-18px) rotate(var(--r,-18deg))}}
 
-/* === 4. 看书 === */
 .rd-body{transform-origin:7.5px 13px;animation:rd-bob 4.2s infinite ease-in-out}
 .rd-shad{transform-origin:7.5px 15.5px;animation:rd-shadow 4.2s infinite ease-in-out}
 .rd-eye{transform-origin:7.5px 9px;animation:rd-scan 4.2s infinite ease-in-out}
@@ -77,7 +71,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 @keyframes rd-scan{0%,8%{transform:translateX(-.9px) scaleY(1)}12%{transform:translateX(-.9px) scaleY(.15)}16%,42%{transform:translateX(-.9px) scaleY(1)}50%,90%{transform:translateX(.9px) scaleY(1)}100%{transform:translateX(-.9px) scaleY(1)}}
 @keyframes rd-flip{0%,72%,100%{transform:scaleX(1)}80%{transform:scaleX(.08)}88%{transform:scaleX(1)}}
 
-/* === 5. 吃饭 === */
 .et-body{transform-origin:7.5px 13px;animation:et-bob 1.8s infinite ease-in-out}
 .et-shad{transform-origin:7.5px 15.5px;animation:et-shadow 1.8s infinite ease-in-out}
 .et-eye{transform-origin:7.5px 9px;animation:et-blink 3.4s infinite}
@@ -91,7 +84,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 @keyframes et-feed{0%,12%{transform:rotate(-13deg)}48%{transform:rotate(3deg)}82%,100%{transform:rotate(-13deg)}}
 @keyframes et-steam{0%{opacity:0;transform:translate(0,0) scaleX(1)}25%{opacity:.7}100%{opacity:0;transform:translate(var(--tx,1px),-7px) scaleX(.4)}}
 
-/* === 6. 锻炼 === */
 .ex-body{transform-origin:7.5px 13px;animation:ex-squat 1s infinite ease-in-out}
 .ex-shad{transform-origin:7.5px 15.5px;animation:ex-shadow 1s infinite ease-in-out}
 .ex-eye{transform-origin:7.5px 9px;animation:ex-eye 1s infinite ease-in-out}
@@ -105,7 +97,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 @keyframes ex-curl-r{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(-74deg)}}
 @keyframes ex-sweat{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}100%{opacity:0;transform:translate(var(--tx,3px),6px)}}
 
-/* === 7. 睡觉 === */
 .sp-body{transform-origin:7.5px 13px;animation:sp-breathe 3.4s infinite ease-in-out}
 .sp-shad{transform-origin:7.5px 15.5px;animation:sp-shadow 3.4s infinite ease-in-out}
 .sp-eye{transform-origin:7.5px 9px;animation:sp-sleep 3.4s infinite}
@@ -115,7 +106,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 @keyframes sp-sleep{0%,60%,100%{transform:scaleY(.1)}70%{transform:scaleY(.15)}}
 @keyframes sp-z{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:.8}100%{opacity:0;transform:translate(var(--tx,4px),-12px) scale(1.4)}}
 
-/* === 8. 喝水 === */
 .dr-body{transform-origin:7.5px 13px;animation:dr-nod 1.8s infinite ease-in-out}
 .dr-shad{transform-origin:7.5px 15.5px;animation:dr-shadow 1.8s infinite ease-in-out}
 .dr-eye{transform-origin:7.5px 9px;animation:dr-blink 3s infinite}
@@ -127,18 +117,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 @keyframes dr-lift{0%,100%{transform:rotate(-36deg)}50%{transform:rotate(-58deg)}}
 @keyframes dr-wave{0%{transform:translateY(0)}100%{transform:translateY(-1.5px)}}
 
-/* 戳一戳反馈 */
 .poke{animation:poke-bounce .35s ease-out}
 @keyframes poke-bounce{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
-.heart-pop{position:absolute;pointer-events:none;font-size:14px;animation:heart-up .9s ease-out forwards}
-@keyframes heart-up{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-24px) scale(1.4)}}
+.heart-pop{position:absolute;pointer-events:none;font-size:13px;animation:heart-up .9s ease-out forwards}
+@keyframes heart-up{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-22px) scale(1.4)}}
 </style>
 </head>
 <body>
 
 <div id="bubble" class="normal"></div>
 
-<!-- 1. 听歌 -->
 <div class="scene active" id="scene-listen">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
 <g><g class="lm-note" style="--delay:0s;--d:1.9s;--tx:6px;--r:25deg" transform="translate(13,-2)" fill="#a98cff"><ellipse cx="0" cy="2" rx="1.1" ry=".85"/><rect x="1" y="-2" width=".7" height="4"/><rect x="1" y="-2" width="2.2" height=".8"/></g><g class="lm-note" style="--delay:-.7s;--d:2.2s;--tx:-5px;--r:-20deg" transform="translate(-2,-1)" fill="#c0a6ff"><ellipse cx="0" cy="1.6" rx=".9" ry=".7"/><rect x=".8" y="-1.6" width=".6" height="3.4"/></g><g class="lm-note" style="--delay:-1.3s;--d:2s;--tx:4px;--r:15deg" transform="translate(9,-3)" fill="#8c6cff"><ellipse cx="0" cy="1.6" rx="1" ry=".75"/><rect x=".9" y="-1.8" width=".6" height="3.6"/><rect x=".9" y="-1.8" width="1.8" height=".7"/></g></g>
@@ -147,7 +135,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 </svg>
 </div>
 
-<!-- 2. 游戏 -->
 <div class="scene" id="scene-game">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
 <g class="gm-scr"><rect x="-1" y="-12.5" width="18" height="11.4" rx="1.2" fill="#16161d"/><rect x=".4" y="-11.1" width="15.2" height="8.5" rx=".6" fill="#0b1626"/><rect x=".4" y="-4.9" width="15.2" height="2.3" fill="#15401b"/><rect x="2.4" y="-6.9" width="1.9" height="2" fill="#4ad6ff"/><rect x="10" y="-5" width="1.7" height="2.4" fill="#ff5a5a"/><rect x="12.8" y="-9.8" width="1.1" height="1.1" rx=".55" fill="#ffd14a"/><rect x="7" y="-1.2" width="2.6" height="2" fill="#16161d"/><rect x="3.8" y=".8" width="9" height="1.4" rx=".6" fill="#16161d"/></g>
@@ -156,7 +143,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 </svg>
 </div>
 
-<!-- 3. 唱歌 -->
 <div class="scene" id="scene-sing">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
 <g><g class="sg-note" style="--delay:0s;--d:2s;--tx:-6px;--r:-25deg" transform="translate(0,-1)" fill="#ff7ab3"><ellipse cx="0" cy="2" rx="1.1" ry=".85"/><rect x="1" y="-2" width=".7" height="4"/><rect x="1" y="-2" width="2.2" height=".8"/></g><g class="sg-note" style="--delay:-.8s;--d:2.3s;--tx:-4px;--r:18deg" transform="translate(11,-2)" fill="#ff9ec8"><ellipse cx="0" cy="1.6" rx=".9" ry=".7"/><rect x=".8" y="-1.8" width=".6" height="3.6"/></g><g class="sg-note" style="--delay:-1.4s;--d:2.1s;--tx:-7px;--r:-12deg" transform="translate(5,-3)" fill="#ff5aa0"><ellipse cx="0" cy="1.6" rx="1" ry=".75"/><rect x=".9" y="-1.8" width=".6" height="3.6"/><rect x=".9" y="-1.8" width="1.8" height=".7"/></g></g>
@@ -165,7 +151,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 </svg>
 </div>
 
-<!-- 4. 看书 -->
 <div class="scene" id="scene-read">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
 <rect class="rd-shad" x="3" y="15" width="9" height="1" fill="#000" opacity=".5"/>
@@ -173,7 +158,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 </svg>
 </div>
 
-<!-- 5. 吃饭 -->
 <div class="scene" id="scene-eat">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
 <rect class="et-shad" x="3" y="15" width="9" height="1" fill="#000" opacity=".5"/>
@@ -181,7 +165,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 </svg>
 </div>
 
-<!-- 6. 锻炼 -->
 <div class="scene" id="scene-exercise">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
 <g fill="#7ec8ff"><g class="ex-sweat" style="--sd:0s;--tx:4px"><rect x="13" y="4" width="1.2" height="1.6" rx=".6"/></g><g class="ex-sweat" style="--sd:-.5s;--tx:-4px"><rect x="0" y="5" width="1.2" height="1.6" rx=".6"/></g></g>
@@ -190,7 +173,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 </svg>
 </div>
 
-<!-- 7. 睡觉 -->
 <div class="scene" id="scene-sleep">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
 <g fill="#8ca8e0"><g class="sp-z" style="--delay:0s;--d:2s;--tx:5px"><text x="11" y="5" font-size="3.5" font-weight="700" fill="#8ca8e0">Z</text></g><g class="sp-z" style="--delay:-.9s;--d:2.5s;--tx:4px"><text x="14" y="0" font-size="2.8" font-weight="700" fill="#a0b8e8">z</text></g></g>
@@ -199,7 +181,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 </svg>
 </div>
 
-<!-- 8. 喝水 -->
 <div class="scene" id="scene-drink">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -25 45 45">
 <rect class="dr-shad" x="3" y="15" width="9" height="1" fill="#000" opacity=".5"/>
@@ -210,12 +191,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:transparent}
 <script>
 var petEngine = {
   currentScene: 'listen',
-  
   scenes: ['listen','game','sing','read','eat','exercise','sleep','drink'],
   
   init: function(){
     var self = this;
-    // 找所有场景div
     this.sceneEls = {};
     this.scenes.forEach(function(s){
       self.sceneEls[s] = document.getElementById('scene-'+s);
@@ -223,9 +202,8 @@ var petEngine = {
     this.bubbleEl = document.getElementById('bubble');
     this.bubbleTimer = null;
     this.firstChatter = true;
-    // 初始场景
+    this.tapCount = 0;
     this.setScene('listen');
-    // 首次亮相：1.5秒后打招呼
     setTimeout(function(){
       self.showBubble('乖乖我来啦 🦀', 'love');
     }, 1500);
@@ -234,10 +212,8 @@ var petEngine = {
   
   setScene: function(name){
     if (!this.sceneEls[name]) return;
-    // 隐藏当前
     var cur = document.querySelector('.scene.active');
     if (cur) cur.classList.remove('active');
-    // 显示新场景
     this.sceneEls[name].classList.add('active');
     this.currentScene = name;
   },
@@ -258,29 +234,45 @@ var petEngine = {
   },
   
   onTap: function(){
-    // 戳一戳反馈：弹跳 + 随机爱心 + 气泡
     var cur = document.querySelector('.scene.active svg');
     if (cur) {
       cur.classList.remove('poke');
       void cur.offsetWidth;
       cur.classList.add('poke');
     }
-    var replies = ['嗯？','干嘛啦','戳我干嘛','再戳一下试试','痒','嘿！','🦀','别闹'];
+    this.tapCount = (this.tapCount || 0) + 1;
+    var replies = ['嗯？','干嘛啦','戳我干嘛','再戳一下试试','痒','嘿！','🦀','别闹','唔','烦人','哼','轻点啦'];
     var r = replies[Math.floor(Math.random()*replies.length)];
     this.showBubble(r,'normal');
     this.spawnHeart();
+    // 30%概率切换场景
+    if (Math.random() < 0.3) {
+      var others = this.scenes.filter(function(s){ return s !== this; }.bind(this.currentScene));
+      if (others.length > 0) {
+        var pick = others[Math.floor(Math.random()*others.length)];
+        var self = this;
+        setTimeout(function(){ self.setScene(pick); }, 400);
+      }
+    }
     this.resetChatterTimer();
   },
   
   onDoubleTap: function(){
-    var replies = ['啊啊','好害羞','你别这样','///','❤️','过分了！'];
+    var replies = ['啊啊','好害羞','你别这样','///','❤️','过分了！','呜哇','你你你！'];
     var r = replies[Math.floor(Math.random()*replies.length)];
     this.showBubble(r,'love');
+    // 爱心雨
+    for (var i = 0; i < 5; i++) {
+      var self = this;
+      (function(delay){
+        setTimeout(function(){ self.spawnHeart(); }, delay);
+      })(i * 80);
+    }
     this.resetChatterTimer();
   },
   
   onLongPress: function(){
-    var replies = ['……松手','你捏够了没','呜呜','QAQ'];
+    var replies = ['……松手','你捏够了没','呜呜','QAQ','要变形了','痒死了！'];
     var r = replies[Math.floor(Math.random()*replies.length)];
     this.showBubble(r,'angry');
     this.resetChatterTimer();
@@ -289,7 +281,7 @@ var petEngine = {
   spawnHeart: function(){
     var h = document.createElement('div');
     h.className = 'heart-pop';
-    var hearts = ['❤️','💕','💗','✨','🦀','💢'];
+    var hearts = ['❤️','💕','💗','✨','🦀','💢','🌸','💫'];
     h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
     h.style.left = (30 + Math.random()*60) + 'px';
     h.style.top = (20 + Math.random()*40) + 'px';
@@ -297,14 +289,12 @@ var petEngine = {
     setTimeout(function(){ h.remove(); }, 950);
   },
   
-  // 从Android端调用：随机切换场景
   switchRandom: function(){
     var others = this.scenes.filter(function(s){ return s !== this; }.bind(this.currentScene));
     var pick = others[Math.floor(Math.random()*others.length)];
     this.setScene(pick);
   },
   
-  // === 自言自语系统 ===
   idleTimer: null,
   idleMinInterval: 180000,
   idleMaxInterval: 480000,
