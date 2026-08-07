@@ -18,11 +18,11 @@ Downloading https://services.gradle.org/distributions/gradle-8.5-bin.zip
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
+> Task :app:processDebugManifestForPackage
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
-> Task :app:processDebugManifestForPackage
-> Task :app:compressDebugAssets
 > Task :app:desugarDebugFileDependencies
+> Task :app:compressDebugAssets
 > Task :app:processDebugResources
 > Task :app:checkDebugDuplicateClasses
 
@@ -36,8 +36,8 @@ w: file:///home/runner/work/AI-Live-Overflow/AI-Live-Overflow/app/src/main/java/
 > Task :app:processDebugJavaRes
 > Task :app:mergeLibDexDebug
 > Task :app:mergeDebugJniLibFolders
-> Task :app:mergeProjectDexDebug
 > Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:mergeProjectDexDebug
 > Task :app:stripDebugDebugSymbols NO-SOURCE
 > Task :app:mergeDebugJavaResource
 > Task :app:validateSigningDebug
@@ -48,5 +48,5 @@ w: file:///home/runner/work/AI-Live-Overflow/AI-Live-Overflow/app/src/main/java/
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
 
-BUILD SUCCESSFUL in 41s
+BUILD SUCCESSFUL in 40s
 33 actionable tasks: 33 executed
